@@ -1,0 +1,22 @@
+{
+  "manifest_version": "0.2",
+  "name": "nakamotonotes-barometer",
+  "display_name": "NakamotoNotes Bitcoin Barometer",
+  "version": "0.1.0",
+  "description": "Bitcoin Barometer for AI agents: Heat Score, BTC price, ten indicators and daily history. Read-only.",
+  "author": { "name": "NakamotoNotes", "url": "https://nakamotonotes.com" },
+  "homepage": "https://nakamotonotes.com/open",
+  "repository": { "type": "git", "url": "https://github.com/multiassist/nakamotonotes-mcp" },
+  "license": "MIT",
+  "server": {
+    "type": "node",
+    "entry_point": "src/bin.mjs",
+    "mcp_config": { "command": "node", "args": ["${__dirname}/src/bin.mjs"] }
+  },
+  "tools": [
+    { "name": "get_market_snapshot", "description": "Current Heat Score, zone, BTC price with 24h/7d change, and the ten indicators with value and heat." },
+    { "name": "explain_indicator", "description": "What one indicator measures and its current heat." },
+    { "name": "get_history", "description": "Daily Heat Score history in a date range." }
+  ],
+  "compatibility": { "runtimes": { "node": ">=20" } }
+}
