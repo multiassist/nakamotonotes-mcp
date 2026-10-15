@@ -1,7 +1,16 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "com.nakamotonotes/barometer",
+  "title": "NakamotoNotes Bitcoin Barometer",
   "description": "Bitcoin Barometer: Heat Score, BTC price, ten indicators and daily history. Read-only.",
   "version": "0.1.0",
-  "packages": [{ "registryType": "npm", "identifier": "@nakamotonotes/mcp", "version": "0.1.0", "transport": { "type": "stdio" } }]
+  "websiteUrl": "https://nakamotonotes.com/open",
+  "repository": { "url": "https://github.com/multiassist/nakamotonotes-mcp", "source": "github" },
+  "packages": [{
+    "registryType": "mcpb",
+    "identifier": "https://github.com/multiassist/nakamotonotes-mcp/releases/download/v0.1.0/nakamotonotes-barometer.mcpb",
+    "version": "0.1.0",
+    "fileSha256": "e45efc974839527f2bc847dc6e4540d6aea60751e59d200019d8d2d38151f178",
+    "transport": { "type": "stdio" }
+  }]
 }
