@@ -4,7 +4,7 @@ Read-only MCP server for the NakamotoNotes Bitcoin Barometer: Heat Score 0-100, 
 
 ## Install
 
-- **Claude Desktop (one click):** download `nakamotonotes-barometer.mcpb` from the latest [release](https://github.com/multiassist/nakamotonotes-mcp/releases/latest) and open it.
+- **Claude Desktop (one click):** download `nakamotonotes-barometer.mcpb` from [nakamotonotes.com](https://nakamotonotes.com/downloads/nakamotonotes-barometer.mcpb) and open it.
 - **Any MCP client (stdio):** `npx -y @nakamotonotes/mcp`
 
 ```json
