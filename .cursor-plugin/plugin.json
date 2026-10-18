@@ -1,0 +1,12 @@
+{
+  "name": "nakamotonotes-bitcoin-barometer",
+  "version": "0.2.0",
+  "description": "Bitcoin Barometer from Nakamoto Notes: today's 0-100 Heat Score and zone, BTC price, ten on-chain and sentiment indicators, and daily history. Read-only public data, no API key. Descriptive data and education, not financial advice.",
+  "author": { "name": "Nakamoto Notes", "email": "support@nakamotonotes.com" },
+  "homepage": "https://nakamotonotes.com/ai",
+  "repository": "https://github.com/multiassist/nakamotonotes-mcp",
+  "license": "MIT",
+  "keywords": ["bitcoin", "barometer", "on-chain", "fear-and-greed", "mvrv", "market-data", "mcp"],
+  "logo": "assets/logo.png",
+  "mcpServers": "./mcp.json"
+}
