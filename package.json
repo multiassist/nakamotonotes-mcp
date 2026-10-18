@@ -1,6 +1,6 @@
 {
   "name": "@nakamotonotes/mcp",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Bitcoin Barometer for AI agents: Heat Score, BTC price, indicators and history from NakamotoNotes.",
   "mcpName": "com.nakamotonotes/barometer",
   "type": "module",

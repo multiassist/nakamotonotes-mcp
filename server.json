@@ -3,7 +3,7 @@
   "name": "com.nakamotonotes/barometer",
   "title": "NakamotoNotes Bitcoin Barometer",
   "description": "Bitcoin Barometer: Heat Score, BTC price, ten indicators and daily history. Read-only.",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "websiteUrl": "https://nakamotonotes.com/open",
   "repository": {
     "url": "https://github.com/multiassist/nakamotonotes-mcp",
@@ -12,9 +12,9 @@
   "packages": [
     {
       "registryType": "mcpb",
-      "identifier": "https://github.com/multiassist/nakamotonotes-mcp/releases/download/v0.1.0/nakamotonotes-barometer.mcpb",
-      "version": "0.1.0",
-      "fileSha256": "e45efc974839527f2bc847dc6e4540d6aea60751e59d200019d8d2d38151f178",
+      "identifier": "https://github.com/multiassist/nakamotonotes-mcp/releases/download/v0.2.0/nakamotonotes-barometer.mcpb",
+      "version": "0.2.0",
+      "fileSha256": "11f7a99bc6029cbde2c72fbf1e832fced6ca120cf4328d4b18268d227f506246",
       "transport": {
         "type": "stdio"
       }

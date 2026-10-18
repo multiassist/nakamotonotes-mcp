@@ -2,7 +2,7 @@
   "manifest_version": "0.2",
   "name": "nakamotonotes-barometer",
   "display_name": "NakamotoNotes Bitcoin Barometer",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Bitcoin Barometer for AI agents: Heat Score, BTC price, ten indicators and daily history. Read-only.",
   "author": { "name": "NakamotoNotes", "url": "https://nakamotonotes.com" },
   "homepage": "https://nakamotonotes.com/open",
