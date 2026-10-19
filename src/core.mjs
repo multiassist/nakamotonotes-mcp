@@ -1,6 +1,7 @@
 import { createRequire } from 'node:module';
 const VERSION = createRequire(import.meta.url)('../package.json').version;
 export const LIMITATION = 'A description of the current reading against its history, not a forecast or investment advice.';
+export const IMAGE_URL = 'https://nakamotonotes.com/open/barometer.png';
 const METHOD = 'https://nakamotonotes.com/methodology';
 const LICENSE = 'CC BY 4.0, attribute NakamotoNotes';
 const ATTRIBUTION = 'Fear & Greed Index by alternative.me';
@@ -88,7 +89,17 @@ export async function reading() {
   return { score: f.score, zone: bandOf(f.zoneBands, f.score), asOf: f.computedAt, price, zoneBands: f.zoneBands,
     previous: { yesterday: prev(y), weekAgo: prev(w) }, change1d: f.score - y.score, change7d: f.score - w.score,
     gaugeNote: '8 of the 10 indicators are shown as gauges on the site (gauge: true); all 10 feed the Heat Score.',
-    indicators, degraded: [...new Set(degraded)], methodology: METHOD, license: LICENSE, attribution: ATTRIBUTION, limitation: LIMITATION };
+    indicators, degraded: [...new Set(degraded)], methodology: METHOD, imageUrl: IMAGE_URL, license: LICENSE, attribution: ATTRIBUTION, limitation: LIMITATION };
+}
+// The Barometer picture as base64 PNG for the MCP image content item; a non-200 or a body that is not a PNG throws.
+export async function picture() {
+  let res;
+  try { res = await fetch(base() + '/open/barometer.png', { headers: { 'user-agent': `nakamotonotes-mcp/${VERSION}`, accept: 'image/png' }, signal: AbortSignal.timeout(10000) }); }
+  catch (e) { fail(`picture request failed or timed out: ${e.name === 'TimeoutError' ? 'timeout after 10s' : e.message}`); }
+  if (res.status !== 200) fail(`picture returned HTTP ${res.status}`);
+  const b = Buffer.from(await res.arrayBuffer());
+  if (b.length < 5000 || b.subarray(0, 8).toString('hex') !== '89504e470d0a1a0a') fail('picture is not a PNG');
+  return b.toString('base64');
 }
 export async function explain(name) {
   if (typeof name !== 'string' || squash(name) === '') fail(`name must be a string; valid names: ${KEYS.join(', ')}`);
