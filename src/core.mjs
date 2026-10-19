@@ -111,27 +111,30 @@ export async function explain(name) {
 const day = (s) => typeof s === 'string' && /^\d{4}-\d\d-\d\d$/.test(s) && new Date(`${s}T00:00:00Z`).toISOString().slice(0, 10) === s;
 const monday = (d) => addDays(d, -((new Date(`${d}T00:00:00Z`).getUTCDay() + 6) % 7));
 const periodStart = { day: (d) => d, week: monday, month: (d) => `${d.slice(0, 7)}-01` };
-const MAXP = 400;
-export async function history(from, to, interval = 'auto') {
+const MAXP = 400; const DEFAULT_CAP = 180;
+export async function history(from, to, interval = 'auto', maxPoints) {
   const rows = await historyRows(); const f = await feed();
   if (to === undefined) to = rows[rows.length - 1].date;
   if (!day(from) || !day(to)) fail('from and to must be real dates in YYYY-MM-DD form');
   if (from > to) fail('from must not be after to');
+  if (maxPoints !== undefined && !(Number.isInteger(maxPoints) && maxPoints >= 1 && maxPoints <= MAXP)) fail('max_points must be an integer from 1 to 400');
   if (!['auto', 'day', 'week', 'month'].includes(interval)) fail('interval must be one of day, week, month, auto');
   if (from > rows[rows.length - 1].date) fail(`from ${from} is after the last history row ${rows[rows.length - 1].date}`);
   const sel = rows.filter((r) => r.date >= from && r.date <= to);
   const count = (iv) => new Set(sel.map((r) => periodStart[iv](r.date))).size;
+  const cap = maxPoints ?? (interval === 'auto' ? DEFAULT_CAP : MAXP);
   let used = interval;
-  if (interval === 'auto') used = ['day', 'week', 'month'].find((iv) => count(iv) <= MAXP) || fail('range too large for 400 points');
-  else if (count(interval) > MAXP) fail(`${interval} interval would return ${count(interval)} points (max ${MAXP}); the ${['day', 'week', 'month'].find((iv) => count(iv) <= MAXP)} interval fits`);
+  if (interval === 'auto') used = ['day', 'week', 'month'].find((iv) => count(iv) <= cap) || 'month';
+  else if (maxPoints === undefined && count(interval) > MAXP) fail(`${interval} interval would return ${count(interval)} points (max ${MAXP}); the ${['day', 'week', 'month'].find((iv) => count(iv) <= MAXP)} interval fits`);
   const groups = new Map(); for (const r of sel) { const k = periodStart[used](r.date); if (!groups.has(k)) groups.set(k, []); groups.get(k).push(r.score); }
-  const points = [...groups].map(([date, ss]) => {
+  const allPoints = [...groups].map(([date, ss]) => {
     if (used === 'day') return { date, score: ss[0], zone: bandOf(f.zoneBands, ss[0]) };
     const score = Math.round(ss.reduce((a, b) => a + b, 0) / ss.length);
     return { date, score, min: Math.min(...ss), max: Math.max(...ss), zone: bandOf(f.zoneBands, score), days: ss.length };
   });
+  const omitted = Math.max(0, allPoints.length - cap); const points = omitted ? allPoints.slice(-cap) : allPoints;
   const all = sel.map((r) => r.score);
   const daysPerZone = Object.fromEntries(ZONES.map((z) => [z, sel.filter((r) => bandOf(f.zoneBands, r.score) === z).length]));
   const summary = all.length ? { min: Math.min(...all), max: Math.max(...all), mean: r2(all.reduce((a, b) => a + b, 0) / all.length), days: all.length, daysPerZone } : fail('no history rows in that range');
-  return { from, to, interval: used, count: points.length, points, summary, dataRange: { first: rows[0].date, last: rows[rows.length - 1].date }, methodology: METHOD, license: LICENSE, limitation: LIMITATION };
+  return { from, to, interval: used, count: points.length, points, ...(omitted ? { truncated: true, omittedPoints: omitted } : {}), summary, dataRange: { first: rows[0].date, last: rows[rows.length - 1].date }, methodology: METHOD, license: LICENSE, limitation: LIMITATION };
 }

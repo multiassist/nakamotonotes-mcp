@@ -1,2 +1,5 @@
 server.json
 .git
+assets
+.cursor-plugin
+mcp.json
